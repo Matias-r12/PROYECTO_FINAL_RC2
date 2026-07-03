@@ -35,6 +35,7 @@ int main()
         escribircita(&P1[i], P1, i);  
     }
 }
+
 void mostrarcita(citas*a,int tam){
     for (int i = 0; i < tam; i++)
     {
@@ -51,6 +52,7 @@ void mostrarcita(citas*a,int tam){
 
     }
 }
+
 int fechaValida(int dia, int mes, int año){
 
     if(año < 1)
@@ -66,6 +68,16 @@ int fechaValida(int dia, int mes, int año){
         return 0;
 
     if(mes == 2 && dia > 29)
+        return 0;
+
+    return 1;
+}
+int horaValida(int hora, int minuto){
+
+    if(hora < 0 || hora > 23)
+        return 0;
+
+    if(minuto < 0 || minuto > 59)
         return 0;
 
     return 1;
@@ -126,3 +138,20 @@ void escribircita(citas *e, citas *arr,int pos){
 
 }
 
+void guardararchivo(citas*a,int tam){
+  FILE *Archivo=fopen("citas.csv","w");
+  for (int i = 0; i < tam; i++)
+  {
+    fprintf(Archivo,"C%03d,%s,%s,%02d/%02d/%02d,%02d:%02d,Dr.%s\n",
+        a[i].Cit,
+        a[i].Paciente,
+        a[i].Especialidad,
+        a[i].FechaD,
+        a[i].FechaM,
+        a[i].FechaA,
+        a[i].HoraH,
+        a[i].HoraM,
+        a[i].Doc);
+  }
+  fclose(Archivo);
+}
