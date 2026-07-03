@@ -51,6 +51,25 @@ void mostrarcita(citas*a,int tam){
 
     }
 }
+int fechaValida(int dia, int mes, int año){
+
+    if(año < 1)
+        return 0;
+
+    if(mes < 1 || mes > 12)
+        return 0;
+
+    if(dia < 1 || dia > 31)
+        return 0;
+
+    if((mes == 4 || mes == 6 || mes == 9 || mes == 11) && dia > 30)
+        return 0;
+
+    if(mes == 2 && dia > 29)
+        return 0;
+
+    return 1;
+}
 
 
 void escribircita(citas *e, citas *arr,int pos){
