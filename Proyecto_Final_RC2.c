@@ -35,6 +35,22 @@ int main()
         escribircita(&P1[i], P1, i);  
     }
 }
+void mostrarcita(citas*a,int tam){
+    for (int i = 0; i < tam; i++)
+    {
+    printf("C%03d",a[i].Cit);
+    printf(",%s",a[i].Paciente);
+    printf(",%s",a[i].Especialidad);
+    printf(",%02d/",a[i].FechaD);
+    printf("%02d/",a[i].FechaM);
+    printf("%02d/",a[i].FechaA);
+    printf(",%02d",a[i].HoraH);
+    printf(":%02d",a[i].HoraM);
+    printf(",Dr.%s",a[i].Doc);
+    
+
+    }
+}
 
 
 void escribircita(citas *e, citas *arr,int pos){
