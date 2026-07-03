@@ -34,6 +34,12 @@ int main()
         P1[i].Cit = i + 1;
         escribircita(&P1[i], P1, i);  
     }
+    mostrarcita(P1,cont);
+    guardararchivo(P1,cont);
+    printf("\nSe han guardado los datos en citas.csv");
+    buscarCita(P1, cont);
+    //actualizarCita(P1, cont);
+    return 0;
 }
 
 void mostrarcita(citas*a,int tam){
@@ -51,6 +57,59 @@ void mostrarcita(citas*a,int tam){
     
 
     }
+}
+void buscarCita(citas *a, int tam){
+
+    int codigo;
+    int encontrado = 0;
+    printf("\nBusca una cita,ingrese el codigo de la cita para ver sus datos: \n");
+    scanf("%d",&codigo);
+
+    for(int i = 0; i < tam; i++){
+
+        if(a[i].Cit == codigo){
+
+            printf("\nCita encontrada:\n");
+
+            printf("Codigo: C%03d\n", a[i].Cit);
+            printf("Paciente: %s \n",
+                   a[i].Paciente);
+
+            printf("Especialidad: %s\n",
+                   a[i].Especialidad);
+
+            printf("Fecha: %02d/%02d/%04d\n",
+                   a[i].FechaD,
+                   a[i].FechaM,
+                   a[i].FechaA);
+
+            printf("Hora: %02d:%02d\n",
+                   a[i].HoraH,
+                   a[i].HoraM);
+
+            printf("Doctor: Dr.%s\n",
+                   a[i].Doc);
+
+            encontrado = 1;
+            break;
+        }
+    }
+
+    if(encontrado == 0){
+        printf("\nNo existe una cita con ese codigo.\n");
+    }
+}
+int fechaHoraRepetida(citas *arr, int n, citas *nueva){
+    for(int i = 0; i < n; i++){
+        if(arr[i].FechaD == nueva->FechaD &&
+           arr[i].FechaM == nueva->FechaM &&
+           arr[i].FechaA == nueva->FechaA &&
+           arr[i].HoraH  == nueva->HoraH &&
+           arr[i].HoraM  == nueva->HoraM){
+            return 1; 
+        }
+    }
+    return 0; 
 }
 
 int fechaValida(int dia, int mes, int año){
@@ -72,6 +131,7 @@ int fechaValida(int dia, int mes, int año){
 
     return 1;
 }
+
 int horaValida(int hora, int minuto){
 
     if(hora < 0 || hora > 23)
@@ -82,7 +142,6 @@ int horaValida(int hora, int minuto){
 
     return 1;
 }
-
 
 void escribircita(citas *e, citas *arr,int pos){
     
@@ -155,3 +214,4 @@ void guardararchivo(citas*a,int tam){
   }
   fclose(Archivo);
 }
+
