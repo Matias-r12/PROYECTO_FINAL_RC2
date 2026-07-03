@@ -22,4 +22,72 @@ int fechaHoraRepetida(citas *arr, int n, citas *nueva);
 void mostrarcita(citas*a,int tam);
 void guardararchivo(citas*a,int tam);
 
+int main()
+{
+    int cont;
+    printf("\nIngrese la cantidad total de citas que quieres guardar :");
+    scanf("%d",&cont);
+    citas P1[cont];
+ 
+  for(int i = 0; i < cont; i++){
+        printf("\n--- Cita %d ---\n", i + 1);
+        P1[i].Cit = i + 1;
+        escribircita(&P1[i], P1, i);  
+    }
+}
+
+
+void escribircita(citas *e, citas *arr,int pos){
+    
+  getchar(); 
+
+    printf("\nIngrese el Nombre del paciente: ");
+    fgets(e->Paciente, sizeof(e->Paciente), stdin);
+    e->Paciente[strcspn(e->Paciente, "\n")] = '\0';
+
+    printf("Ingrese la especialidad: ");
+    fgets(e->Especialidad, sizeof(e->Especialidad), stdin);
+    e->Especialidad[strcspn(e->Especialidad, "\n")] = '\0';
+
+    
+    do {
+        printf("\nIngrese la Fecha");
+        printf("\nDia: ");
+        scanf("%d",&e->FechaD);
+        printf("Mes: ");
+        scanf("%d",&e->FechaM);
+        printf("Año: ");
+        scanf("%d",&e->FechaA);
+
+        printf("\nIngrese la Hora (24 horas)");
+        printf("\nHora: ");
+        scanf("%d",&e->HoraH);
+        printf("Minutos: ");
+        scanf("%d",&e->HoraM);
+
+        
+        if(!fechaValida(e->FechaD,e->FechaM,e->FechaA)){
+        printf("\nERROR: Fecha invalida.\n");
+    }
+
+        if(!horaValida(e->HoraH,e->HoraM)){
+        printf("\nERROR: Hora invalida.\n");
+    }
+ 
+        if(fechaHoraRepetida(arr, pos, e)){
+            printf("\nERROR: Ya existe una cita en esa fecha y hora. Intente nuevamente.\n");
+        }
+         
+    } while(
+    !fechaValida(e->FechaD,e->FechaM,e->FechaA) ||
+    !horaValida(e->HoraH,e->HoraM) ||
+    fechaHoraRepetida(arr, pos, e));
+        
+    getchar(); 
+
+    printf("Ingrese el nombre del doctor: ");
+    fgets(e->Doc, sizeof(e->Doc), stdin);
+    e->Doc[strcspn(e->Doc, "\n")] = '\0';
+
+}
 
