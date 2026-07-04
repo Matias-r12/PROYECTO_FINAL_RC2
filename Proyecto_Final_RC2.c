@@ -15,13 +15,12 @@ int HoraM;
 char Doc[16];
 }citas;
 void escribircita(citas* e, citas* arr, int pos);
-void buscarCita(citas *a, int tam);
+void buscarCita(citas *a, int *tam);
 int fechaValida(int dia, int mes, int anio);
 int horaValida(int hora, int minuto);
 int fechaHoraRepetida(citas *arr, int n, citas *nueva);
 void mostrarcita(citas*a,int tam);
 void guardararchivo(citas*a,int tam);
-void actualizarCita(citas *a, int tam);
 
 int main()
 {
@@ -38,7 +37,7 @@ int main()
     mostrarcita(P1,cont);
     guardararchivo(P1,cont);
     printf("\nSe han guardado los datos en citas.csv");
-    buscarCita(P1, cont);
+    buscarCita(P1, &cont);
     return 0;
 }
 
@@ -58,81 +57,107 @@ void mostrarcita(citas*a,int tam){
 
     }
 }
-void buscarCita(citas *a, int tam){
+
+void buscarCita(citas *a, int *tam){
 
     int codigo;
     int encontrado = 0;
-    printf("\nBusca una cita,ingrese el codigo de la cita para ver sus datos: \n");
-    scanf("%d",&codigo);
 
-    for(int i = 0; i < tam; i++){
+    printf("\nBusque una cita, ingrese el codigo de la cita :C0 ");
+    scanf("%d", &codigo);
+
+    for(int i = 0; i < *tam; i++){
 
         if(a[i].Cit == codigo){
 
+            encontrado = 1;
+
             printf("\nCita encontrada:\n");
-
             printf("Codigo: C%03d\n", a[i].Cit);
-            printf("Paciente: %s \n",
-                   a[i].Paciente);
-
-            printf("Especialidad: %s\n",
-                   a[i].Especialidad);
-
+            printf("Paciente: %s\n", a[i].Paciente);
+            printf("Especialidad: %s\n", a[i].Especialidad);
             printf("Fecha: %02d/%02d/%04d\n",
                    a[i].FechaD,
                    a[i].FechaM,
                    a[i].FechaA);
-
             printf("Hora: %02d:%02d\n",
                    a[i].HoraH,
                    a[i].HoraM);
-
             printf("Doctor: Dr.%s\n",
                    a[i].Doc);
-                
-char opcion;
 
-printf("\n¿Desea actualizar esta cita? (S/N): ");
-scanf(" %c", &opcion);
+            char opcion;
 
-if(opcion == 'S' || opcion == 's'){
+            printf("\n¿Desea actualizar esta cita? (S/N): ");
+            scanf(" %c", &opcion);
 
-    getchar();
+            if(opcion == 'S' || opcion == 's'){
 
-    printf("\nNuevo nombre del paciente: ");
-    fgets(a[i].Paciente, sizeof(a[i].Paciente), stdin);
-    a[i].Paciente[strcspn(a[i].Paciente, "\n")] = '\0';
+                getchar();
 
-    printf("Nueva especialidad: ");
-    fgets(a[i].Especialidad, sizeof(a[i].Especialidad), stdin);
-    a[i].Especialidad[strcspn(a[i].Especialidad, "\n")] = '\0';
+                printf("\nNuevo nombre del paciente: ");
+                fgets(a[i].Paciente, sizeof(a[i].Paciente), stdin);
+                a[i].Paciente[strcspn(a[i].Paciente, "\n")] = '\0';
 
-    printf("Nuevo doctor: ");
-    fgets(a[i].Doc, sizeof(a[i].Doc), stdin);
-    a[i].Doc[strcspn(a[i].Doc, "\n")] = '\0';
+                printf("Nueva especialidad: ");
+                fgets(a[i].Especialidad, sizeof(a[i].Especialidad), stdin);
+                a[i].Especialidad[strcspn(a[i].Especialidad, "\n")] = '\0';
 
-    printf("Nuevo dia: ");
-    scanf("%d", &a[i].FechaD);
+                printf("Nuevo doctor: ");
+                fgets(a[i].Doc, sizeof(a[i].Doc), stdin);
+                a[i].Doc[strcspn(a[i].Doc, "\n")] = '\0';
 
-    printf("Nuevo mes: ");
-    scanf("%d", &a[i].FechaM);
+                printf("Nuevo dia: ");
+                scanf("%d", &a[i].FechaD);
 
-    printf("Nuevo año: ");
-    scanf("%d", &a[i].FechaA);
+                printf("Nuevo mes: ");
+                scanf("%d", &a[i].FechaM);
 
-    printf("Nueva hora: ");
-    scanf("%d", &a[i].HoraH);
+                printf("Nuevo año: ");
+                scanf("%d", &a[i].FechaA);
 
-    printf("Nuevo minuto: ");
-    scanf("%d", &a[i].HoraM);
+                printf("Nueva hora: ");
+                scanf("%d", &a[i].HoraH);
 
-    printf("\nCita actualizada correctamente.\n");
-}
-else{
-    printf("\nLa cita no fue modificada.\n");
-}
+                printf("Nuevo minuto: ");
+                scanf("%d", &a[i].HoraM);
 
-            encontrado = 1;
+                guardararchivo(a, *tam);
+
+                printf("\nCita actualizada correctamente.\n");
+            }
+            else{
+
+                char eliminar;
+
+                printf("\nLa cita no fue modificada.\n");
+                printf("¿Desea eliminar esta cita? (S/N): ");
+                scanf(" %c", &eliminar);
+
+                if(eliminar == 'S' || eliminar == 's'){
+
+                    printf("\nLa cita C%03d sera eliminada.\n",
+                           a[i].Cit);
+
+                    for(int j = i; j < (*tam)-1; j++){
+                        a[j] = a[j+1];
+                    }
+
+                    (*tam)--;
+
+                    /* Reorganizar los códigos */
+                    for(int j = 0; j < *tam; j++){
+                        a[j].Cit = j + 1;
+                    }
+
+                    guardararchivo(a, *tam);
+
+                    printf("\nCita eliminada correctamente.\n");
+                    printf("Total de citas restantes: %d\n", *tam);
+                    printf("El archivo citas.csv ha sido actualizado.\n");
+                }
+            }
+
             break;
         }
     }
@@ -141,6 +166,8 @@ else{
         printf("\nNo existe una cita con ese codigo.\n");
     }
 }
+
+
 int fechaHoraRepetida(citas *arr, int n, citas *nueva){
     for(int i = 0; i < n; i++){
         if(arr[i].FechaD == nueva->FechaD &&
@@ -239,21 +266,31 @@ void escribircita(citas *e, citas *arr,int pos){
 
 }
 
-void guardararchivo(citas*a,int tam){
-  FILE *Archivo=fopen("citas.csv","w");
-  for (int i = 0; i < tam; i++)
-  {
-    fprintf(Archivo,"C%03d,%s,%s,%02d/%02d/%02d,%02d:%02d,Dr.%s\n",
-        a[i].Cit,
-        a[i].Paciente,
-        a[i].Especialidad,
-        a[i].FechaD,
-        a[i].FechaM,
-        a[i].FechaA,
-        a[i].HoraH,
-        a[i].HoraM,
-        a[i].Doc);
-  }
-  fclose(Archivo);
+
+void guardararchivo(citas *a, int tam){
+
+    FILE *Archivo = fopen("citas.csv", "w");
+
+    if(Archivo == NULL){
+        printf("\nError al abrir el archivo.\n");
+        return;
+    }
+
+    for(int i = 0; i < tam; i++){
+
+        fprintf(Archivo,
+                "C%03d,%s,%s,%02d/%02d/%04d,%02d:%02d,Dr.%s\n",
+                a[i].Cit,
+                a[i].Paciente,
+                a[i].Especialidad,
+                a[i].FechaD,
+                a[i].FechaM,
+                a[i].FechaA,
+                a[i].HoraH,
+                a[i].HoraM,
+                a[i].Doc);
+    }
+
+    fclose(Archivo);
 }
 
