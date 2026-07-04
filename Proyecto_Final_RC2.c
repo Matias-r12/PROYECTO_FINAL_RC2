@@ -21,6 +21,7 @@ int horaValida(int hora, int minuto);
 int fechaHoraRepetida(citas *arr, int n, citas *nueva);
 void mostrarcita(citas*a,int tam);
 void guardararchivo(citas*a,int tam);
+void actualizarCita(citas *a, int tam);
 
 int main()
 {
@@ -38,7 +39,6 @@ int main()
     guardararchivo(P1,cont);
     printf("\nSe han guardado los datos en citas.csv");
     buscarCita(P1, cont);
-    //actualizarCita(P1, cont);
     return 0;
 }
 
@@ -89,6 +89,48 @@ void buscarCita(citas *a, int tam){
 
             printf("Doctor: Dr.%s\n",
                    a[i].Doc);
+                
+char opcion;
+
+printf("\n¿Desea actualizar esta cita? (S/N): ");
+scanf(" %c", &opcion);
+
+if(opcion == 'S' || opcion == 's'){
+
+    getchar();
+
+    printf("\nNuevo nombre del paciente: ");
+    fgets(a[i].Paciente, sizeof(a[i].Paciente), stdin);
+    a[i].Paciente[strcspn(a[i].Paciente, "\n")] = '\0';
+
+    printf("Nueva especialidad: ");
+    fgets(a[i].Especialidad, sizeof(a[i].Especialidad), stdin);
+    a[i].Especialidad[strcspn(a[i].Especialidad, "\n")] = '\0';
+
+    printf("Nuevo doctor: ");
+    fgets(a[i].Doc, sizeof(a[i].Doc), stdin);
+    a[i].Doc[strcspn(a[i].Doc, "\n")] = '\0';
+
+    printf("Nuevo dia: ");
+    scanf("%d", &a[i].FechaD);
+
+    printf("Nuevo mes: ");
+    scanf("%d", &a[i].FechaM);
+
+    printf("Nuevo año: ");
+    scanf("%d", &a[i].FechaA);
+
+    printf("Nueva hora: ");
+    scanf("%d", &a[i].HoraH);
+
+    printf("Nuevo minuto: ");
+    scanf("%d", &a[i].HoraM);
+
+    printf("\nCita actualizada correctamente.\n");
+}
+else{
+    printf("\nLa cita no fue modificada.\n");
+}
 
             encontrado = 1;
             break;
