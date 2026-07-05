@@ -113,7 +113,7 @@ void buscarCita(citas *a, int *tam){
                 printf("Nuevo mes: ");
                 scanf("%d", &a[i].FechaM);
 
-                printf("Nuevo año: ");
+                printf("Nuevo anio: ");
                 scanf("%d", &a[i].FechaA);
 
                 printf("Nueva hora: ");
@@ -181,9 +181,9 @@ int fechaHoraRepetida(citas *arr, int n, citas *nueva){
     return 0; 
 }
 
-int fechaValida(int dia, int mes, int año){
+int fechaValida(int dia, int mes, int anio){
 
-    if(año < 1)
+    if(anio < 1)
         return 0;
 
     if(mes < 1 || mes > 12)
